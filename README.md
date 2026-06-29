@@ -73,6 +73,8 @@ AgriMind: Today: 25.1°C, moderate drizzle, high humidity.
 
 ## Architecture
 
+[structure](images/agrimind_struc.png)
+
 AgriMind is a **three-tier multi-agent system** built on Google ADK 2.3.0.
 
 ```
