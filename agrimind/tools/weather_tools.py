@@ -9,8 +9,14 @@ API docs: https://open-meteo.com/en/docs
 import requests
 
 # ── Geocoding: city name → (lat, lon) ─────────────────────────────────────────
-# A small lookup table covering major Indian farming regions.
-# In Phase 4 we'll extend this with a real geocoding API call.
+# Methodology: static lookup table of ~35 major Indian agricultural cities
+# and district headquarters, used instead of a live geocoding API to keep
+# the demo dependency-free and avoid an extra network call + API key.
+# Coordinates are public city-centre values, accurate enough for regional
+# weather (Open-Meteo forecasts are themselves gridded, not hyperlocal).
+# Limitation: unrecognised locations silently fall back to Hyderabad.
+# Production version would call a geocoding API (e.g. Open-Meteo's own
+# free geocoding endpoint) to resolve any Indian village/town by name.
 INDIA_LOCATIONS = {
     "hyderabad":    (17.3850,  78.4867),
     "warangal":     (17.9784,  79.5941),

@@ -41,6 +41,13 @@ MSP_2024_25 = {
 }
 
 # ── Typical market premium / discount over MSP ────────────────────────────────
+# Methodology: these percentages are illustrative estimates derived from
+# observed APMC mandi price patterns relative to MSP for 2023-24/2024-25,
+# NOT a live feed. They model the general direction (which crops typically
+# trade above/below MSP and by roughly how much) so the agent can give
+# directionally correct sell/hold advice in this demo. A production version
+# would replace this with a live Agmarknet/eNAM mandi price API call per
+# state/district, since real premiums vary day-to-day and by location.
 # Positive = market usually pays above MSP; Negative = below MSP risk
 MARKET_PREMIUM_PCT = {
     "paddy":     -5,   "rice":     5,   "jowar":   10,
