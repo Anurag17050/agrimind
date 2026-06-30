@@ -90,14 +90,14 @@ AgriMind is a **three-tier multi-agent system** built on Google ADK 2.3.0.
 │  │        Orchestrator Agent                │   │
 │  │  Routes queries · Manages sessions       │   │
 │  │  Owns long-term memory tools             │   │
-│  └────┬──────────┬──────────┬──────────┬───┘   │
+│  └────┬──────────┬──────────┬──────────┬────┘   │
 │       │          │          │          │        │
-│  ┌────▼───┐ ┌───▼────┐ ┌───▼────┐ ┌───▼────┐  │
-│  │ Soil & │ │Weather │ │Market  │ │Disease │  │
-│  │ Crop   │ │Agent   │ │Agent   │ │Agent   │  │
-│  │ Agent  │ │(MCP)   │ │(MCP)   │ │        │  │
-│  └────────┘ └───┬────┘ └───┬────┘ └────────┘  │
-└─────────────────┼──────────┼───────────────────┘
+│  ┌────▼───┐ ┌───▼────┐ ┌───▼────┐ ┌───▼────┐    │
+│  │ Soil & │ │Weather │ │Market  │ │Disease │    │
+│  │ Crop   │ │Agent   │ │Agent   │ │Agent   │    │
+│  │ Agent  │ │(MCP)   │ │(MCP)   │ │        │    │
+│  └────────┘ └───┬────┘ └───┬────┘ └────────┘    │
+└─────────────────┼──────────┼────────────────────┘
                   │          │
      ┌────────────▼─┐  ┌─────▼──────────┐
      │ Weather MCP  │  │  Market MCP    │
@@ -434,3 +434,28 @@ MIT — see [LICENSE](LICENSE) for details.
 ---
 
 *Built for the Google ADK Agents Capstone · Track: Agents for Good*
+
+## Limitations & Future Work
+
+AgriMind is a working capstone demo, not a production system. Being upfront about its current boundaries:
+
+**Data sources**
+- Weather location lookup uses a static table of ~35 major Indian cities/districts rather than a live geocoding API — unrecognised locations silently fall back to Hyderabad. A production version would call a free geocoding endpoint to resolve any village or town by name.
+- Market price premiums (`MARKET_PREMIUM_PCT` in `market_tools.py`) are illustrative estimates based on typical 2023–25 mandi-vs-MSP patterns, not a live price feed. Real-world deployment would replace this with a live Agmarknet/eNAM API call per state and district, since actual premiums shift daily and vary by mandi.
+- Crop and disease knowledge bases (`crop_tools.py`, `disease_tools.py`) are curated from public ICAR/NCIPM guidelines and cover the most common crops and threats in Telangana/Andhra Pradesh-adjacent regions — they are not exhaustive for all of India's agro-climatic zones.
+
+**Memory & scale**
+- Long-term memory uses local JSON file storage (`data/farm_profiles/`), which is simple and human-readable but won't scale past a few thousand farmers or support concurrent multi-device access. A production deployment would move this to a proper database (e.g. Firestore or PostgreSQL).
+- Sessions use ADK's `InMemorySessionService`, meaning conversation state resets if the server restarts. Production would use a persistent session backend.
+
+**Language & accessibility**
+- Responses currently mix English with occasional Telugu phrases when context suggests a Telangana farmer, but there is no full regional-language interface (Hindi, Telugu, Marathi, Tamil etc.) or voice input — both of which matter enormously for real-world adoption given literacy and smartphone-literacy gaps in the target user base.
+
+**What we'd build next**
+1. Voice input/output so farmers can speak their question instead of typing
+2. A WhatsApp/SMS interface, since that's where most smallholder farmers already are, rather than a web UI
+3. Live Agmarknet price integration replacing the static premium table
+4. Image-based disease diagnosis (upload a photo of the affected leaf) using a vision-capable model, supplementing the current text-symptom approach
+5. A proper database backend for memory, enabling AgriMind to scale beyond a single-machine demo
+
+These are scoped-out deliberately for this capstone to keep the system buildable and testable within the project timeline, while the core multi-agent architecture is designed to make each of these swaps additive rather than a rewrite.
