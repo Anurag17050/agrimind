@@ -5,3 +5,4 @@ __pycache__/
 data/farm_profiles/
 *.db
 .adk/
+venv/
